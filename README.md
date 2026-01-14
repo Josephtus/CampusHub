@@ -6,6 +6,12 @@
 
 ---
 
+## ℹ️ About the Project
+
+**CampusHub** is a robust web application engineered to facilitate dynamic interactions within university campuses. At its core lies a scalable asynchronous backend built with **Python (Sanic)**, designed to handle high-concurrency requests efficiently. The system features a secure **MySQL** database architecture, **Redis** caching for optimized performance, and a fully automated **CI/CD** pipeline via **GitHub Actions** to ensure reliable deployment and code quality.
+
+---
+
 ## 👨‍💻 My Contributions
 
 I was responsible for the entire server-side development and infrastructure of the project. My key contributions include:
