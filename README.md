@@ -62,5 +62,12 @@ Follow these steps to set up the project locally.
 
 1. **Clone the repository**
    ```bash
-   git clone [https://github.com/Josephtus/CampusHub.git](https://github.com/yourusername/campushub.git)
+   git clone [https://github.com/Josephtus/CampusHub.git](https://github.com/Josephtus/CampusHub.git)
    cd campushub
+
+2. **Environment Configuration**
+Create a .env file in the root directory (refer to example_env)
+
+3. **Build and Run with Docker**
+docker-compose up --build
+
