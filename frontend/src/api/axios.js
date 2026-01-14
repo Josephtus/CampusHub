@@ -1,0 +1,17 @@
+import axios from 'axios';
+
+const api = axios.create({
+  // Tarayıcı üzerinden eriştiğin için localhost:8000 doğru kalabilir
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000', 
+});
+
+// Her istekte token'ı otomatik ekle 
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+export default api;

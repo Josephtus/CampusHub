@@ -1,0 +1,66 @@
+from sanic import Sanic
+from sanic.response import json
+from sanic_ext import Extend
+from src.database import init_db, close_db
+from src.config import REDIS_URL, logger
+from src.routes.auth import auth_bp
+from src.routes.clubs import clubs_bp
+from src.routes.events import events_bp
+from src.routes.comments import comments_bp
+from src.routes.users import users_bp
+from src.routes.notifications import notif_bp
+from src.routes.admin import admin_bp
+from redis import asyncio as aioredis
+from sanic_limiter import Limiter, get_remote_address
+from src.routes.weather import weather_bp
+
+
+app = Sanic("CampusHubAPI")
+
+# --- CORS VE GÜVENLİK AYARLARI ---
+app.config.CORS_ORIGINS = "http://localhost:5173"  # Frontend adresin
+app.config.CORS_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+app.config.CORS_ALLOW_HEADERS = ["Content-Type", "Authorization"]
+app.config.CORS_SUPPORTS_CREDENTIALS = True
+
+
+# Sanic Extension'ı CORS ayarlarıyla başlatıyoruz
+Extend(app)
+
+limiter = Limiter(
+    app, 
+    global_limits=["60 per minute"], 
+    key_func=get_remote_address,
+    storage_uri=REDIS_URL
+)
+
+# Blueprints
+app.blueprint(auth_bp)
+app.blueprint(clubs_bp)
+app.blueprint(events_bp)
+app.blueprint(comments_bp)
+app.blueprint(users_bp)
+app.blueprint(notif_bp)
+app.blueprint(admin_bp) 
+app.blueprint(weather_bp)
+
+@app.before_server_start
+async def setup_db(app, loop):
+    logger.info("Server Starting... Connecting to DB and Redis.")
+    await init_db()
+    app.ctx.redis = aioredis.from_url(REDIS_URL, decode_responses=True)
+    logger.info("Connected to Database and Redis.")
+
+@app.after_server_stop
+async def stop_db(app, loop):
+    logger.info("Server Stopping... Closing connections.")
+    await close_db()
+    await app.ctx.redis.close()
+    logger.info("Connections closed.")
+
+@app.get("/")
+async def health_check(request):
+    return json({"status": "active", "message": "CampusHub Backend is running!"})
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000, debug=False) # Hataları görmek için debug=True

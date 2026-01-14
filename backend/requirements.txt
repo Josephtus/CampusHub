@@ -1,0 +1,17 @@
+sanic
+sanic-ext
+tortoise-orm
+aiomysql
+cryptography
+redis
+bcrypt
+pyjwt
+python-dotenv
+requests
+pytest
+aerich
+sanic-limiter
+aiohttp
+aiosmtplib
+selenium
+webdriver-manager
