@@ -62,7 +62,7 @@ Follow these steps to set up the project locally.
 
 1. **Clone the repository**
    ```bash
-   git clone [https://github.com/Josephtus/CampusHub.git](https://github.com/Josephtus/CampusHub.git)
+   git clone https://github.com/Josephtus/CampusHub.git
    cd campushub
 
 2. **Environment Configuration**
